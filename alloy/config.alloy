@@ -1,0 +1,79 @@
+local.file_match "traefik_logs" {
+  path_targets = [{
+    __address__ = "localhost",
+    __path__    = "/logs/access.json",
+    job         = "traefik_access",
+  }]
+}
+
+loki.source.file "traefik_access" {
+  targets    = local.file_match.traefik_logs.targets
+  forward_to = [loki.process.traefik.receiver]
+}
+
+// Process and parse JSON logs
+loki.process "traefik" {
+  forward_to = [loki.write.default.receiver]
+
+  stage.json {
+    expressions = {
+      timestamp = "time",
+      method    = "RequestMethod",
+      path      = "RequestPath",
+      status    = "DownstreamStatus",
+      duration  = "Duration",
+      client_ip = "ClientAddr",
+      host      = "RequestHost",
+      user_agent = `["request_User-Agent"]`,
+    }
+  }
+
+  stage.timestamp {
+    source = "timestamp"
+    format = "RFC3339"
+  }
+
+  stage.labels {
+    values = {
+      method = "method",
+      status = "status",
+      host   = "host",
+    }
+  }
+
+  stage.static_labels {
+    values = {
+      service = "traefik",
+    }
+  }
+}
+
+// Docker container logs
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+loki.source.docker "containers" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.docker.containers.targets
+  forward_to = [loki.process.containers.receiver]
+}
+
+loki.process "containers" {
+  forward_to = [loki.write.default.receiver]
+
+  stage.docker {}
+
+  stage.static_labels {
+    values = {
+      service = "docker",
+    }
+  }
+}
+
+// Write to Loki
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}

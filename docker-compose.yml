@@ -1,0 +1,12 @@
+networks:
+  defense-net:
+    driver: bridge
+
+volumes:
+  loki-data:
+  grafana-data:
+
+include:
+  - compose.traefik.yml
+  # - compose.wordpress.yml
+  # - compose.wiki.yml
