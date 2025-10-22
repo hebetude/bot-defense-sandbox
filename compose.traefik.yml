@@ -30,7 +30,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      # - ./loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - ./loki/loki-config.yml:/etc/loki/local-config.yaml:ro
       - loki-data:/loki
     networks:
       - defense-net
@@ -64,7 +64,10 @@ services:
       - defense-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grafana.rule=Host(`${GRAFANA_DOMAIN}`)"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.botdefense.online`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.tls=true"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     depends_on:
       - loki
@@ -76,4 +79,7 @@ services:
       - defense-net
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.botdefense.online`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
