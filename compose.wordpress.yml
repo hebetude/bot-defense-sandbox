@@ -30,7 +30,7 @@ services:
         define('WP_DEBUG_LOG', true);
         define('WP_DEBUG_DISPLAY', false);
         define('FORCE_SSL_ADMIN', true);
-        $_SERVER['HTTPS'] = 'on';
+        $$_SERVER['HTTPS'] = 'on';
     volumes:
       - wordpress-data:/var/www/html
       - ./wordpress/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
@@ -70,11 +70,3 @@ services:
       - "traefik.http.routers.phpmyadmin.tls=true"
       - "traefik.http.routers.phpmyadmin.tls.certresolver=letsencrypt"
       - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
-
-volumes:
-  wordpress-db-data:
-  wordpress-data:
-
-networks:
-  defense-net:
-    external: true

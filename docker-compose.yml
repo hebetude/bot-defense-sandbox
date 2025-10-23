@@ -5,6 +5,8 @@ networks:
 volumes:
   loki-data:
   grafana-data:
+  wordpress-db-data:
+  wordpress-data:
 
 include:
   - compose.traefik.yml
