@@ -20,9 +20,9 @@ services:
     restart: unless-stopped
     environment:
       WORDPRESS_DB_HOST: wordpress-db:3306
-      WORDPRESS_DB_USER: wpuser
-      WORDPRESS_DB_PASSWORD: wppass2024
-      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: ${MYSQL_USER}           # Use env vars
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}   # Use env vars
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}       # Use env vars
       WORDPRESS_DEBUG: 1
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_HOME', 'https://hotel.botdefense.online');
@@ -36,14 +36,12 @@ services:
       - ./wordpress/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     networks:
       - defense-net
-    
-    ports:
-      - "8080:80"
-
+    # Remove ports - let Traefik handle routing
     depends_on:
       - wordpress-db
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=thesis-bot-defense_defense-net"  # Add full network name
       - "traefik.http.routers.wordpress.rule=Host(`hotel.botdefense.online`)"
       - "traefik.http.routers.wordpress.entrypoints=websecure"
       - "traefik.http.routers.wordpress.tls=true"
@@ -56,8 +54,8 @@ services:
     restart: unless-stopped
     environment:
       PMA_HOST: wordpress-db
-      PMA_USER: wpuser
-      PMA_PASSWORD: wppass2024
+      PMA_USER: ${MYSQL_USER}           # Use env vars
+      PMA_PASSWORD: ${MYSQL_PASSWORD}   # Use env vars
       UPLOAD_LIMIT: 50M
     networks:
       - defense-net
@@ -65,6 +63,7 @@ services:
       - wordpress-db
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=thesis-bot-defense_defense-net"  # Add full network name
       - "traefik.http.routers.phpmyadmin.rule=Host(`pma.botdefense.online`)"
       - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.phpmyadmin.tls=true"
