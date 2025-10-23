@@ -1,0 +1,51 @@
+services:
+  wiki-db:
+    image: postgres:15-alpine
+    container_name: wiki-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: wiki
+      POSTGRES_USER: wikijs
+      POSTGRES_PASSWORD: wikijspass2024
+    volumes:
+      - wiki-db-data:/var/lib/postgresql/data
+    networks:
+      - defense-net
+
+  wikijs:
+    image: ghcr.io/requarks/wiki:2
+    container_name: wikijs
+    restart: unless-stopped
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: wiki-db
+      DB_PORT: 5432
+      DB_USER: wikijs
+      DB_PASS: wikijspass2024
+      DB_NAME: wiki
+      WIKI_ADMIN_EMAIL: admin@botdefense.online
+      WIKI_ADMIN_PASS: AdminPass2024!  # Change this
+      LOG_FORMAT: json
+    volumes:
+      - wikijs-data:/wiki/data
+      - wikijs-cache:/wiki/cache
+    networks:
+      - defense-net
+    depends_on:
+      - wiki-db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wikijs.rule=Host(`wiki.botdefense.online`)"
+      - "traefik.http.routers.wikijs.entrypoints=websecure"
+      - "traefik.http.routers.wikijs.tls=true"
+      - "traefik.http.routers.wikijs.tls.certresolver=letsencrypt"
+      - "traefik.http.services.wikijs.loadbalancer.server.port=3000"
+
+volumes:
+  wiki-db-data:
+  wikijs-data:
+  wikijs-cache:
+
+networks:
+  defense-net:
+    external: true

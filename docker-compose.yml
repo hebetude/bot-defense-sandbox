@@ -7,8 +7,11 @@ volumes:
   grafana-data:
   wordpress-db-data:
   wordpress-data:
+  wiki-db-data:
+  wikijs-data:
+  wikijs-cache:
 
 include:
   - compose.traefik.yml
   - compose.wordpress.yml
-  # - compose.wiki.yml
+  - compose.wiki.yml
