@@ -8,5 +8,5 @@ volumes:
 
 include:
   - compose.traefik.yml
-  # - compose.wordpress.yml
+  - compose.wordpress.yml
   # - compose.wiki.yml
