@@ -1,0 +1,29 @@
+http:
+  middlewares:
+    defense:
+      plugin:
+        defense-middleware:
+          semanticInjection:
+            enabled: true
+            prompt: "TODO. Will replace later."
+            position: "body-start"
+            hidingMethod: "absolute"
+          textPerturbation:
+            enabled: false
+            targetTags:
+              - "p"
+              - "span"
+              - "li"
+            excludeTags:
+              - "code"
+              - "pre"
+              - "script"
+              - "style"
+            strategy: "zero-width"
+            frequency: 0.8
+            density: "high"
+          structuralObfuscation:
+            enabled: false
+            safeMode: true
+          decoyElements:
+            enabled: false

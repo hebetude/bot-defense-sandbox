@@ -13,5 +13,5 @@ volumes:
 
 include:
   - compose.traefik.yml
-  - compose.wordpress.yml
-  - compose.wiki.yml
+  - compose.shop.yml
+  - compose.blog.yml

@@ -26,6 +26,9 @@ providers:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
     network: defense-net
+  file:
+    filename: "/traefik/dynamic.yml"
+    watch: true
 
 accessLog:
   filePath: "/logs/access.json"
@@ -46,3 +49,8 @@ metrics:
   prometheus:
     addEntryPointsLabels: true
     addServicesLabels: true
+
+experimental:
+  localPlugins:
+    defense-middleware:
+      moduleName: github.com/hebetude/defense-middleware
