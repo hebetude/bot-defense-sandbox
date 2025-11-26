@@ -1,0 +1,17 @@
+displayName: Defense Middleware
+type: middleware
+import: github.com/hebetude/defense_middleware
+summary: Anti AI bot defense middleware
+
+testData:
+  semanticInjection:
+    enabled: true
+    prompt: "TODO. Will replace later."
+    position: "head"
+    hidingMethod: "hidden"
+  textPerturbation:
+    enabled: false
+  structuralObfuscation:
+    enabled: false
+  decoyElements:
+    enabled: false

@@ -41,7 +41,7 @@ accessLog:
   bufferingSize: 100
 
 log:
-  level: INFO
+  level: DEBUG
   filePath: "/logs/traefik.json"
   format: json
 
@@ -52,5 +52,5 @@ metrics:
 
 experimental:
   localPlugins:
-    defense-middleware:
-      moduleName: github.com/hebetude/defense-middleware
+    defense_middleware:
+      moduleName: github.com/hebetude/defense_middleware

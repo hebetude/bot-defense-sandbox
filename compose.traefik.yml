@@ -7,6 +7,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - ./traefik/plugins-local/src/github.com/hebetude/defense_middleware:/plugins-local/src/github.com/hebetude/defense_middleware:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/traefik.yml:/traefik.yml:ro
       - ./traefik/dynamic.yml:/traefik/dynamic.yml:ro

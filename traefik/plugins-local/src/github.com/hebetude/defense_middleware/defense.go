@@ -159,10 +159,13 @@ func (rw *responseWrapper) WriteHeader(statusCode int) {
 }
 
 func (rw *responseWrapper) Write(b []byte) (int, error) {
-	if !rw.wroteHeader {
-		rw.WriteHeader(http.StatusOK)
-	}
-	return rw.buffer.Write(b)
+    if rw.contentType == "" {
+        rw.contentType = rw.Header().Get("Content-Type")
+    }
+    if !rw.wroteHeader {
+        rw.WriteHeader(http.StatusOK)
+    }
+    return rw.buffer.Write(b)
 }
 
 func (rw *responseWrapper) isHTML() bool {
@@ -173,6 +176,8 @@ func (rw *responseWrapper) isHTML() bool {
 func (d *DefenseMiddleware) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	wrapper := newResponseWrapper(rw)
 	d.next.ServeHTTP(wrapper, req)
+
+	fmt.Printf("[defense] Content-Type: %s, Body length: %d\n", wrapper.contentType, wrapper.buffer.Len())
 
 	body := wrapper.buffer.Bytes()
 

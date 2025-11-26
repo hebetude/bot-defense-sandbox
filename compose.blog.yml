@@ -17,7 +17,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=thesis-bot-defense_defense-net"
       - "traefik.http.routers.blog.rule=Host(`blog.botdefense.online`)"
-      - "traefik.http.routers.blog.middlewares=defense@file" # <====== ENDABLED defense middleware
+      - "traefik.http.routers.blog.middlewares=defense@file" # <====== ENABLED defense middleware
       - "traefik.http.routers.blog.entrypoints=websecure"
       - "traefik.http.routers.blog.tls=true"
       - "traefik.http.routers.blog.tls.certresolver=letsencrypt"
