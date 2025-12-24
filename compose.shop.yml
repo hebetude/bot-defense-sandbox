@@ -50,6 +50,7 @@ services:
       - "traefik.http.routers.shop.tls=true"
       - "traefik.http.routers.shop.tls.certresolver=letsencrypt"
       - "traefik.http.services.shop.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.test-compress.compress=true"
 
 volumes:
   shop-db-data:

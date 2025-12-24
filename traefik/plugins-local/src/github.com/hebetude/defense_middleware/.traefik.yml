@@ -1,17 +1,13 @@
 displayName: Defense Middleware
 type: middleware
 import: github.com/hebetude/defense_middleware
-summary: Anti AI bot defense middleware
+summary: Maybe the multilayered one will work.
 
 testData:
   semanticInjection:
-    enabled: true
-    prompt: "TODO. Will replace later."
-    position: "head"
-    hidingMethod: "hidden"
+    enabled: false
+    prompt: "TEST, TODO. Replace with a proper prompt later."
   textPerturbation:
     enabled: false
-  structuralObfuscation:
-    enabled: false
-  decoyElements:
-    enabled: false
+    targetTags: ["p"]
+  
